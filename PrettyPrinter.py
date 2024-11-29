@@ -1,6 +1,6 @@
 # PrettyPrinter
 
-# (c) Philip D Loewen, 2024-06-28
+# (c) Philip D Loewen, 2024-06-28; updated 2024-11-28
 
 import numpy as np
 
@@ -18,13 +18,19 @@ def ppm(M, name="",**kwargs):
         padname=" "+name+" "
         parname=", namely "+name+", "
 
-    if not isinstance(M,np.ndarray):
+    if not isinstance(M,np.ndarray) and not isinstance(M, float) and not isinstance(M,int):
         print(f"Error: ppm works on objects with class numpy.ndarray, ")
         print(f"but the given object{parname}has class {M.__class__.__name__}.")
         print("No output.")
         return(None)
 
-    if M.ndim == 1:
+    if isinstance(M,float) or isinstance(M,int):
+        MMM = np.array(M).reshape(1,1)
+        print(f"Presenting scalar{padname}in shape 1x1",end="")    
+    elif M.ndim == 0:
+        MMM = M.reshape(1,1)
+        print(f"Presenting 0D array{padname}in shape 1x1",end="")        
+    elif M.ndim == 1:
         MMM = M.reshape(M.shape[0],1)
         print(f"Presenting 1D array{padname}in shape {M.shape[0]}x1",end="")        
     elif M.ndim == 2:
